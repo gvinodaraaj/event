@@ -13,6 +13,9 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.getAll()
     }
 
+    suspend fun logedInUser(phone: String): User {
+        return userDao.getLoginDetails(phone)
+    }
     suspend fun delete(user: User) {
         userDao.delete(user)
     }

@@ -17,6 +17,9 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE uid IN (:userIds)")
      suspend fun loadAllByIds(userIds: IntArray): List<User>
 
+    @Query("SELECT * FROM user WHERE user_phone IN (:userPhone)")
+    suspend fun getLoginDetails(userPhone: String): User
+
     @Insert
     suspend fun insertAll(vararg users: User)
 
