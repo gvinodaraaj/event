@@ -28,7 +28,6 @@ class NewAccountActivity : AppCompatActivity(), NewAccountViewModel.Callback {
         binding.account = viewModel
         viewModel.setCallback(this)
         binding.button.setOnClickListener {
-           val phon= viewModel.isExist(binding.editTxtPhone.text.toString().trim())
             val user = NewAccount(
                 binding.editTxtName.text.toString().trim(),
                 binding.editTxtPassword.text.toString().trim(),
@@ -51,10 +50,11 @@ class NewAccountActivity : AppCompatActivity(), NewAccountViewModel.Callback {
             }
 
             NewActivityEnum.Sucess -> {
-                val intent = Intent(this, ListActivity::class.java)
-                intent.putExtra("NewActivity", true)
-                startActivity(intent)
                 finish()
+            }
+
+            NewActivityEnum.PhoneExist -> {
+                Toast.makeText(this, "Phone Number Already Exist", Toast.LENGTH_SHORT).show()
             }
         }
 

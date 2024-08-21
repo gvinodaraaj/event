@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.MyApp
+import com.example.myapplication.data.sharedpreference.PreferencesHelper
 import com.example.myapplication.databinding.LoginMainBinding
 import com.example.myapplication.util.LoginResult
 import com.example.myapplication.view_model.ListActivityViewModel
@@ -32,27 +33,31 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
         binding.txtForget.setOnClickListener {
             val userName = binding.editNameText.text.toString()
             if (userName.isNotEmpty()) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        try {
-                            val userDeferred = async(Dispatchers.IO) {
-                                viewModel.getPassword(userName)
-                            }
-                            val userData = userDeferred.await()
-                            loginFun(userData)
-                        } catch (e: Exception) {
-                            // Handle any errors that might occur
-                            e.printStackTrace()
-                            loginFun(LoginResult.Error("Failed to fetch user data"))
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val userDeferred = async(Dispatchers.IO) {
+                            viewModel.getPassword(userName)
                         }
-
+                        val userData = userDeferred.await()
+                        loginFun(userData)
+                    } catch (e: Exception) {
+                        // Handle any errors that might occur
+                        e.printStackTrace()
+                        loginFun(LoginResult.Error("Failed to fetch user data"))
+                    }
                 }
-            }else{
+            } else {
                 Toast.makeText(
                     this.applicationContext,
                     "Enter user name",
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
+        binding.sugnUpButton.setOnClickListener {
+            val intent = Intent(this, NewAccountActivity::class.java)
+            intent.putExtra("FromLogin", true)
+            startActivity(intent)
         }
         viewModel.setCallback(this)
     }
@@ -96,7 +101,9 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
             }
 
             is LoginResult.Success -> {
-                val intent = Intent(this, ListActivity::class.java)
+                val user= result as LoginResult.Success
+                PreferencesHelper(this).saveLogin(user.User)
+                val intent = Intent(this, HomeActivity::class.java)
                 intent.putExtra("FromLogin", true)
                 startActivity(intent)
                 finish()

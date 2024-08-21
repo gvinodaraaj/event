@@ -79,7 +79,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     val userLiveData = MutableLiveData(
         User(
             name = "vinod",
-            password = "3123",
+            password = "3123312",
             phone = "9600104721",
             mail = "g.vinodaraaj@gmail.com"
         )

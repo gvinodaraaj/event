@@ -2,29 +2,33 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="account"
-            type="com.example.myapplication.view_model.NewAccountViewModel" />
+            type="com.example.myapplication.view_model.NewEventViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
         tools:context=".view.NewEventActivity">
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="New Activity"
+            android:layout_marginTop="8dp"
+            android:text="New Event"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -34,31 +38,46 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/eT"
+            android:id="@+id/eTName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Name"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/eTCategory"
+            app:layout_constraintBottom_toTopOf="@+id/eTAmount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <EditText
-            android:id="@+id/eTCategory"
+            android:id="@+id/eTAmount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:ems="10"
-            android:hint="Heading"
-            android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/eTMultiLine"
+            android:hint="Amount"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/eTPlace"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eT" />
+            app:layout_constraintTop_toBottomOf="@+id/eTName" />
 
         <EditText
-            android:id="@+id/eTMultiLine"
+            android:id="@+id/eTPlace"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Place"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/eTDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eTName" />
+
+        <EditText
+            android:id="@+id/eTDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -67,13 +86,13 @@
             android:inputType="textMultiLine"
             android:maxLines="4"
             android:minLines="4"
-            app:layout_constraintBottom_toTopOf="@+id/editTextDate"
+            app:layout_constraintBottom_toTopOf="@+id/eTStartDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eT" />
+            app:layout_constraintTop_toBottomOf="@+id/eTName" />
 
         <EditText
-            android:id="@+id/editTextDate"
+            android:id="@+id/eTStartDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
@@ -81,15 +100,15 @@
             android:focusable="false"
             android:hint="Start Date"
             android:inputType="date"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/btnEvent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/editTextDate2"
+            app:layout_constraintEnd_toStartOf="@+id/eTEndDate"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eTMultiLine" />
+            app:layout_constraintTop_toBottomOf="@+id/eTDescription" />
 
 
         <EditText
-            android:id="@+id/editTextDate2"
+            android:id="@+id/eTEndDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
@@ -97,9 +116,18 @@
             android:focusable="false"
             android:hint="End Date"
             android:inputType="date"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/btnEvent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eTMultiLine" />
+            app:layout_constraintTop_toBottomOf="@+id/eTDescription" />
+
+        <CheckBox
+            android:id="@+id/isComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Task"
+            app:layout_constraintBottom_toTopOf="@+id/btnEvent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

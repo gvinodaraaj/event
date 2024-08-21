@@ -9,8 +9,12 @@ import com.example.myapplication.data.db.model.User
 import com.example.myapplication.data.db.repo.UserRepository
 import com.example.myapplication.util.NewActivityEnum
 import com.example.myapplication.view_model.model.NewAccount
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class NewAccountViewModel(private val repository: UserRepository) : ViewModel() {
     private var _acc = MutableLiveData<NewAccount>()
@@ -26,7 +30,23 @@ class NewAccountViewModel(private val repository: UserRepository) : ViewModel() 
     }
 
     fun insert(user: User) = viewModelScope.launch {
-        repository.insert(user)
+
+        val exists: Boolean = withContext(Dispatchers.IO) {
+            isExist(user.phone)
+        }.await()
+
+        // If the user does not exist, insert them into the database
+        if (!exists) {
+            withContext(Dispatchers.IO) {
+                repository.insert(user)
+            }
+            functionToBeCalled(NewActivityEnum.Sucess)
+        }
+        else{
+            functionToBeCalled(NewActivityEnum.PhoneExist)
+        }
+
+
     }
 
     fun functionToBeCalled(result: NewActivityEnum) {
@@ -34,8 +54,8 @@ class NewAccountViewModel(private val repository: UserRepository) : ViewModel() 
         callback?.onFunctionTriggered(result)
     }
 
-    fun isExist(input: String) = viewModelScope.launch  {
-        repository.isPhoneExist(input)
+    fun isExist(input: String) = viewModelScope.async  {
+        return@async repository.isPhoneExist(input)
     }
 
     fun newAccount(newAccount: NewAccount) {
@@ -52,7 +72,7 @@ class NewAccountViewModel(private val repository: UserRepository) : ViewModel() 
                         mail = newAccount.mail,
                     )
                 )
-                functionToBeCalled(NewActivityEnum.Sucess)
+
             } else {
                 functionToBeCalled(NewActivityEnum.PasswordError)
             }

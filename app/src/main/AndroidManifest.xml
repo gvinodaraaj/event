@@ -34,6 +34,10 @@
             android:exported="true"
             android:theme="@style/Theme.MyApplication"/>
         <activity
+            android:name=".view.NewEventActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MyApplication"/>
+        <activity
             android:name=".view.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.MyApplication"/>
