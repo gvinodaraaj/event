@@ -79,7 +79,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.toProfile.setOnClickListener(){
-            val intent = Intent(this, ListActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("FromHome", true)
             startActivity(intent)
         }
