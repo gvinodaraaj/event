@@ -65,7 +65,7 @@ dependencies {
 
     def room_version = "2.6.1"
     def hilt_version = "2.44"
-    def compose_version="1.5.0"
+    def compose_version= "1.6.0"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // To use Kotlin annotation processing tool (kapt)
@@ -89,15 +89,24 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.0.0'
    // implementation 'com.google.android.gms:play-services-location:21.0.1'
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     //compose
+
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    implementation "androidx.activity:activity-compose:1.6.1"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
-    implementation "androidx.activity:activity-compose:1.6.1"
+    // Jetpack Compose runtime with LiveData support
+    implementation "androidx.compose.runtime:runtime-livedata:1.5.1"
+
+    // Lifecycle components with LiveData support
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    kapt "androidx.lifecycle:lifecycle-compiler:2.6.1"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.6.0"
+
 
 }

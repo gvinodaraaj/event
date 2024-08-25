@@ -101,8 +101,10 @@ class LoginActivity : AppCompatActivity(), LoginViewModel.Callback {
             }
 
             is LoginResult.Success -> {
-                val user= result as LoginResult.Success
-                PreferencesHelper(this).saveLogin(user.User)
+                val user = result as LoginResult.Success
+                if (binding.chRemember.isChecked) {
+                    PreferencesHelper(this).saveLogin(user.User)
+                }
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.putExtra("FromLogin", true)
                 startActivity(intent)

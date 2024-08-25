@@ -78,10 +78,10 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     // This method will be called from the Activity to trigger the function
     val userLiveData = MutableLiveData(
         User(
-            name = "vinod",
-            password = "3123312",
-            phone = "9600104721",
-            mail = "g.vinodaraaj@gmail.com"
+            name = "",
+            password = "",
+            phone = "",
+            mail = ""
         )
     )
 

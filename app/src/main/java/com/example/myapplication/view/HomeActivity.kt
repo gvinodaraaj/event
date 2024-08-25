@@ -22,6 +22,7 @@ import com.example.myapplication.data.db.AppDatabase
 import com.example.myapplication.data.db.dao.UserDao
 import com.example.myapplication.data.db.model.Event
 import com.example.myapplication.data.db.model.User
+import com.example.myapplication.data.sharedpreference.PreferencesHelper
 import com.example.myapplication.databinding.HomeMainBinding
 import com.example.myapplication.util.UploadWorker
 import com.example.myapplication.util.isNetworkAvailable
@@ -74,9 +75,14 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.toMap.setOnClickListener(){
-            val intent = Intent(this, MapActivity::class.java)
+            PreferencesHelper(this).setLogOut()
+            val intent = Intent(this, LoginActivity::class.java)
             intent.putExtra("FromHome", true)
             startActivity(intent)
+            finish()
+      /*      val intent = Intent(this, MapActivity::class.java)
+            intent.putExtra("FromHome", true)
+            startActivity(intent)*/
         }
         binding.toProfile.setOnClickListener(){
             val intent = Intent(this, MainActivity::class.java)
