@@ -150,7 +150,7 @@ class SecondFragment : Fragment(), MainActivity.CustomBackPressHandler {
                 .fillMaxWidth()
                 .clickable {
                     viewModel.updateEventDetails(categoryName = itemsList.name, categoryId = itemsList.id)
-                //    findNavController().popBackStack()
+                   findNavController().popBackStack()
                 },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,

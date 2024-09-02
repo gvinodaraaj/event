@@ -69,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
             //   updateItems(userDao.getAll().toMutableList())
         }*/
         binding.add.setOnClickListener{
-            val intent = Intent(this, NewEventActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("FromHome", true)
             startActivity(intent)
         }

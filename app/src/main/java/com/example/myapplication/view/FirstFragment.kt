@@ -153,7 +153,7 @@ class FirstFragment : Fragment(), MainActivity.CustomBackPressHandler, NewEventV
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = Event.categoryName?: "Select Category",
+                        text = Event.categoryName ?: "Select Category",
                         color = Color.Black,
                         fontSize = 14.sp,
                         modifier = Modifier
@@ -233,7 +233,9 @@ class FirstFragment : Fragment(), MainActivity.CustomBackPressHandler, NewEventV
             }
             Spacer(modifier = Modifier.height(32.dp))
             Button(onClick = {
-           viewModel.newEvent(Event)
+                viewModel.newEvent(Event)
+                findNavController().popBackStack()
+
             }) {
                 Text(
                     text = "Add",
@@ -364,7 +366,7 @@ class FirstFragment : Fragment(), MainActivity.CustomBackPressHandler, NewEventV
         )
 
         Text(
-            text = "${Event.startDate?.toString()?.Date()?: "End Date"}",
+            text = "${Event.startDate?.toString()?.Date() ?: "End Date"}",
             color = Color.Black,
             fontSize = 15.sp,
             modifier = Modifier
