@@ -41,7 +41,7 @@ class NewEventViewModel(private val repository: EventRepository) : ViewModel() {
 
 
     fun newEvent(event: NewEvent) {
-        if (event.name.isBlank() || event.place.isBlank() || event.startDate.isBlank()  ) {
+        if (event.name.isBlank() || event.place.isBlank()) {
             functionToBeCalled(NewActivityEnum.Mandatory)
         }
         else{

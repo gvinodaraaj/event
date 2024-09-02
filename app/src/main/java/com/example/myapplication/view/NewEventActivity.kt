@@ -65,16 +65,16 @@ class NewEventActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             datePickerDialog.show()
         }
         binding.btnEvent.setOnClickListener {
-            val event = NewEvent(
+            /*val event = NewEvent(
                 binding.eTName.text.toString().trim(),
                 binding.eTPlace.text.toString().trim(),
-                binding.eTStartDate.text.toString().trim(),
+                binding.eTStartDate.text.toString().trim().,
                 binding.eTEndDate.text.toString().trim(),
                 binding.eTAmount.text.toString().trim().toDouble(),
                 binding.eTDescription.text.toString().trim(),
                 binding.isComplete.isChecked
             )
-            viewModel.newEvent(event)
+            viewModel.newEvent(event)*/
         }
     }
 
@@ -113,4 +113,5 @@ class NewEventActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         dateEditText.setText("" + myYear + "/" + myMonth + "/" + myDay + "  " + myHour + ":" + myMinute)
     }
+
 }

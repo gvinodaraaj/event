@@ -32,7 +32,7 @@ class ToDoAdapter(private var itemList: MutableList<Event>) : RecyclerView.Adapt
         holder.nameText.text = currentItem.title
         holder.phoneText.text = currentItem.amount.toString()
         holder.emailText.text = currentItem.place
-        holder.dateText.text=currentItem.endDate
+      //  holder.dateText.text=currentItem.endDate
         holder.progress.setProgress(70,true)
     }
 

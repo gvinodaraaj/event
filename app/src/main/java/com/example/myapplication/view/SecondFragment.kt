@@ -1,11 +1,13 @@
-package com.example.myapplication
+package com.example.myapplication.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,12 +15,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.material.Divider
+import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
@@ -38,13 +38,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.asFlow
-import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentSecondBinding
-import com.example.myapplication.view.MainActivity
 import com.example.myapplication.view_model.MainViewModel
 import com.example.myapplication.view_model.factory.MainViewModelFactory
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.fragment.findNavController
+import com.example.myapplication.MyApp
+import com.example.myapplication.R
 import com.example.myapplication.data.db.model.ToDoCategory
 import com.example.myapplication.view_model.model.NewToDoCategory
 
@@ -55,7 +58,7 @@ class SecondFragment : Fragment(), MainActivity.CustomBackPressHandler {
 
     private var _binding: FragmentSecondBinding? = null
     private val viewModel: MainViewModel by activityViewModels() {
-        MainViewModelFactory((requireActivity().application as MyApp).repositoryCategory)
+        MainViewModelFactory((requireActivity().application as MyApp).repositoryCategory,(requireActivity().application as MyApp).repositoryEvent)
     }
 
     // This property is only valid between onCreateView and
@@ -93,7 +96,8 @@ class SecondFragment : Fragment(), MainActivity.CustomBackPressHandler {
     }
 
     @Composable
-    fun AddEvent(itemsList:List<NewToDoCategory>,
+    fun AddEvent(
+        itemsList: List<NewToDoCategory>,
         categoryClick: () -> Unit
     ) {
 
@@ -109,28 +113,14 @@ class SecondFragment : Fragment(), MainActivity.CustomBackPressHandler {
                 modifier = Modifier
                     .padding(8.dp, 10.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            if(itemsList.size >= 1) {
-                LazyColumn(
+            Spacer(modifier = Modifier.height(32.dp))
+            if (itemsList.size >= 1) {
+                Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(itemsList) { item ->
-                        CatogeryListItem(item)
-                    }
+                    itemsList.map { CatogeryListItem(it) }
                 }
-             /*   LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(itemL) { item ->
-                        // Custom item UI
-                        Text(
-                            text = item,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                        Divider() // Add a divider between items
-                    }
-                }*/
-            }else{
+            } else {
                 Text(
                     text = "Add Category",
                     color = Color.Blue,
@@ -140,7 +130,7 @@ class SecondFragment : Fragment(), MainActivity.CustomBackPressHandler {
                         .padding(8.dp, 10.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Button(onClick = { categoryClick() }) {
                 Text(
@@ -150,61 +140,88 @@ class SecondFragment : Fragment(), MainActivity.CustomBackPressHandler {
                 )
             }
         }
-
-
     }
 
 
     @Composable
-    fun CatogeryListItem( itemsList:NewToDoCategory) {
+    fun CatogeryListItem(itemsList: NewToDoCategory) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-                Text(text=itemsList.name)
+                .clickable {
+                    viewModel.updateEventDetails(categoryName = itemsList.name, categoryId = itemsList.id)
+                //    findNavController().popBackStack()
+                },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
 
+        ) {
+            Text(
+                text = itemsList.name,
+                modifier = Modifier
+                    .padding(4.dp,10.dp)
+            )
+            Image(
+                contentDescription = "category",
+                colorFilter = ColorFilter.tint(Color.Green),
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(0.dp, 0.dp, 8.dp, 0.dp)
+                    .clickable {
+                        viewModel.deletCategory(ToDoCategory(itemsList.id,itemsList.name,itemsList.colour,itemsList.type,itemsList.assert))
+                    }
+            )
         }
     }
+
     @Composable
     fun MyAlertDialog(txtModifier: Modifier, txtBg: TextFieldColors) {
-
         val TxtTitle by viewModel.txtTitle.observeAsState(initial = "")
-
         val isFilter by viewModel.isAlert.observeAsState(initial = false)
-
+        var isChecked by remember { mutableStateOf(false) }
 
         if (isFilter) {
             AlertDialog(
                 onDismissRequest = {
                     viewModel.setFilter(false)
                 },
-
                 text = {
-                    TextField(
-                        label = {
-                            Text(
-                                text = "Enter Category",
-                                color = Color.Gray,
-                                fontSize = 14.sp,
-                            )
-                        },
-
-                        value = TxtTitle,
-                        onValueChange = { newText ->
-                            viewModel.setTxtTitle(newText)
-                        },
-                        singleLine = true,
-                        modifier = txtModifier,
-                        colors = txtBg,
-
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        TextField(
+                            label = {
+                                Text(
+                                    text = "Enter Category",
+                                    color = Color.Gray,
+                                    fontSize = 14.sp,
+                                )
+                            },
+                            value = TxtTitle,
+                            onValueChange = { newText ->
+                                viewModel.setTxtTitle(newText)
+                            },
+                            singleLine = true,
+                            modifier = txtModifier,
+                            colors = txtBg,
                         )
+                        Checkbox(
+                            checked = isChecked,
+                            onCheckedChange = { isChecked = it }
+                        )
+                    }
                 },
                 confirmButton = { // 6
                     Button(
                         onClick = {
                             val TxtTitle = viewModel.txtTitle.value.toString()
-                            val newCategory = ToDoCategory(title = TxtTitle, assert = "", colour = "#008000", type = true)
+                            val newCategory = ToDoCategory(
+                                title = TxtTitle,
+                                assert = "",
+                                colour = "#008000",
+                                type = isChecked
+                            )
                             viewModel.insert(newCategory)
                             viewModel.setFilter(false)
                         }
